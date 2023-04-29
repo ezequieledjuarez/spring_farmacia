@@ -2,6 +2,7 @@ package com.unla.farmacia.model;
 
 
 public class Ticket {
+
 	private Venta venta;
 
 	public Ticket(Venta venta) {

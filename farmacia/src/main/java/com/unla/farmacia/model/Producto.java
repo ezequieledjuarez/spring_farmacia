@@ -1,9 +1,18 @@
 package com.unla.farmacia.model;
 
+import java.io.Serializable;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Producto {
-    @JsonProperty("codigo_producto")
+@Document
+public class Producto implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2517704805353730955L;
+	@JsonProperty("codigo_producto")
 	private String codigoProducto;
 	private String nombre;
     @JsonProperty("precio_unitario")

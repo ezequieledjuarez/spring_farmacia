@@ -1,30 +1,41 @@
 package com.unla.farmacia.model;
 
+import java.io.Serializable;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ObraSocial {
-	private String nombre;
-    @JsonProperty("numero_de_afiliado")
-	private Long numeroDeAfiliado;
+@Document
+public class ObraSocial implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2297614000311642964L;
 
-	public ObraSocial(String nombre, Long numeroDeAfiliado) {
+	private String nombre;
+
+	private Long id;
+
+	public ObraSocial(String nombre, Long id) {
 		this.nombre = nombre;
-		this.numeroDeAfiliado = numeroDeAfiliado;
+		this.id = id;
 	}
 
 	public String getNombre() {
-		return this.nombre;
-	}
-
-	public Long getNumeroDeAfiliado() {
-		return this.numeroDeAfiliado;
+		return nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public void setNumeroDeAfiliado(Long numeroDeAfiliado) {
-		this.numeroDeAfiliado = numeroDeAfiliado;
+	public Long getId() {
+		return id;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 }

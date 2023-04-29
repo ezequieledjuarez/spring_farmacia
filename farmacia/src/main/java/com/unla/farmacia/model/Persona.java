@@ -1,22 +1,49 @@
 package com.unla.farmacia.model;
 
+import java.io.Serializable;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Persona {
+@Document(collection = "persona")
+public class Persona implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2911252653417687530L;
+	@Id
 	private String cuil;
 	private Long dni;
 	private Domicilio domicilio;
 	@JsonProperty("obra_social")
 	private ObraSocial obraSocial;
-	@JsonProperty("tipo_persona")
-	private String tipoPersona;
+	@JsonProperty("tipo_de_persona")
+	private TipoPersona tipoPersona;
+	@JsonProperty("numero_de_afiliado")
+	private Long numeroDeAfiliado;
 
-	public Persona(String cuil, Long dni, Domicilio domicilio, ObraSocial obraSocial, String tipoPersona) {
+	public Long getNumeroDeAfiliado() {
+		return numeroDeAfiliado;
+	}
+
+	public void setNumeroDeAfiliado(Long numeroDeAfiliado) {
+		this.numeroDeAfiliado = numeroDeAfiliado;
+	}
+
+	public Persona() {
+		super();
+	}
+
+	public Persona(String cuil, Long dni, Domicilio domicilio, ObraSocial obraSocial, TipoPersona tipoPersona,
+			Long numeroDeAfiliado) {
 		this.cuil = cuil;
 		this.dni = dni;
 		this.domicilio = domicilio;
 		this.obraSocial = obraSocial;
 		this.tipoPersona = tipoPersona;
+		this.numeroDeAfiliado = numeroDeAfiliado;
 	}
 
 	public String getCuil() {
@@ -35,7 +62,7 @@ public class Persona {
 		return this.obraSocial;
 	}
 
-	public String getTipoPersona() {
+	public TipoPersona getTipoPersona() {
 		return this.tipoPersona;
 	}
 
@@ -55,8 +82,14 @@ public class Persona {
 		this.obraSocial = obraSocial;
 	}
 
-	public void setTipoPersona(String tipoPersona) {
+	public void setTipoPersona(TipoPersona tipoPersona) {
 		this.tipoPersona = tipoPersona;
 	}
-}
 
+	@Override
+	public String toString() {
+		return "Persona [cuil=" + cuil + ", dni=" + dni + ", domicilio=" + domicilio + ", obraSocial=" + obraSocial
+				+ ", tipoPersona=" + tipoPersona + ", numeroDeAfiliado=" + numeroDeAfiliado + "]";
+	}
+
+}

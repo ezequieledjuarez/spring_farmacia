@@ -1,6 +1,15 @@
 package com.unla.farmacia.model;
 
-public class Domicilio {
+import java.io.Serializable;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class Domicilio implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2675973059092360737L;
 	private String calle;
 	private Long numero;
 	private String localidad;

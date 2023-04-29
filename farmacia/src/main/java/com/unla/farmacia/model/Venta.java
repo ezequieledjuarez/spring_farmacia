@@ -1,11 +1,19 @@
 package com.unla.farmacia.model;
 
+import java.io.Serializable;
 import java.util.Map;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Venta {
-	private Ticket sucursal;
+@Document
+public class Venta implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5954180872590171489L;
+	private String sucursal;
 	@JsonProperty("numero_de_ticket")
 	private String numeroDeTicket;
 	private String fecha;
@@ -16,7 +24,7 @@ public class Venta {
 	@JsonProperty("persona_empleado_atencion")
 	private Map<String, String> personaEmpleadoAtencion;
 
-	public Venta(Ticket sucursal, String numeroDeTicket, String fecha, String formaDePago, Producto producto,
+	public Venta(String sucursal, String numeroDeTicket, String fecha, String formaDePago, Producto producto,
 			Persona persona, Map<String, String> personaEmpleadoAtencion) {
 		this.sucursal = sucursal;
 		this.numeroDeTicket = numeroDeTicket;
@@ -27,7 +35,7 @@ public class Venta {
 		this.personaEmpleadoAtencion = personaEmpleadoAtencion;
 	}
 
-	public Ticket getSucursal() {
+	public String getSucursal() {
 		return this.sucursal;
 	}
 
@@ -55,7 +63,7 @@ public class Venta {
 		return this.personaEmpleadoAtencion;
 	}
 
-	public void setSucursal(Ticket sucursal) {
+	public void setSucursal(String sucursal) {
 		this.sucursal = sucursal;
 	}
 
