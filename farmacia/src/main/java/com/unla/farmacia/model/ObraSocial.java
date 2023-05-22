@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-@Document
+@JsonInclude(Include.NON_NULL)
 public class ObraSocial implements Serializable {
 	/**
 	 * 
@@ -17,9 +18,17 @@ public class ObraSocial implements Serializable {
 
 	private Long id;
 
+	public ObraSocial() {
+
+	}
+
 	public ObraSocial(String nombre, Long id) {
 		this.nombre = nombre;
 		this.id = id;
+	}
+
+	public ObraSocial(String obraSocial) {
+		this.nombre = obraSocial;
 	}
 
 	public String getNombre() {

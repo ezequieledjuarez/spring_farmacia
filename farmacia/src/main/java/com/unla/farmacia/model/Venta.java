@@ -1,93 +1,155 @@
 package com.unla.farmacia.model;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Document
-public class Venta implements Serializable{
+@JsonInclude(Include.NON_NULL)
+@Document(collection = "venta")
+public class Venta implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5954180872590171489L;
-	private String sucursal;
-	@JsonProperty("numero_de_ticket")
-	private String numeroDeTicket;
+	private static final long serialVersionUID = 3621040837466571686L;
 	private String fecha;
+	@JsonProperty("nro_sucursal")
+	private String nroSucursal;
+	@JsonProperty("nro_ticket")
+	private String nroTicket;
+	@JsonProperty("codigo_venta")
+	@Id
+	private String codigoVenta;
 	@JsonProperty("forma_de_pago")
 	private String formaDePago;
-	private Producto producto;
-	private Persona persona;
-	@JsonProperty("persona_empleado_atencion")
-	private Map<String, String> personaEmpleadoAtencion;
+	@JsonProperty("nro_de_tarjeta")
+	private String nroDeTarjeta;
+	@JsonProperty("lista_productos")
+	private List<Producto> listaProductos;
+	@JsonProperty("empleado_atencion")
+	private String empleadoAtencion;
+	@JsonProperty("empleado_caja")
+	private String empleadoCaja;
+	private Persona cliente;
+	private Long totalFactura;
 
-	public Venta(String sucursal, String numeroDeTicket, String fecha, String formaDePago, Producto producto,
-			Persona persona, Map<String, String> personaEmpleadoAtencion) {
-		this.sucursal = sucursal;
-		this.numeroDeTicket = numeroDeTicket;
+	public Venta() {
+	}
+
+	public Venta(String fecha, String nroSucursal, String nroTicket, String formaDePago, String nroDeTarjeta,
+			List<Producto> listaProductos, String empleadoAtencion, String empleadoCaja, Persona cliente) {
 		this.fecha = fecha;
+		this.nroSucursal = nroSucursal;
+		this.nroTicket = nroTicket;
+		setCodigoVenta(nroSucursal, nroTicket);
 		this.formaDePago = formaDePago;
-		this.producto = producto;
-		this.persona = persona;
-		this.personaEmpleadoAtencion = personaEmpleadoAtencion;
+		setNroDeTarjeta(nroDeTarjeta, formaDePago);
+		this.listaProductos = listaProductos;
+		this.empleadoAtencion = empleadoAtencion;
+		this.empleadoCaja = empleadoCaja;
+		this.cliente = cliente;
+		setTotalFactura(listaProductos);
 	}
 
-	public String getSucursal() {
-		return this.sucursal;
+	public Long totalFactura() {
+		return this.totalFactura;
 	}
 
-	public String getNumeroDeTicket() {
-		return this.numeroDeTicket;
+	public void setTotalFactura(List<Producto> listaProductos) {
+		Long totalFactura = 0L;
+
+		for (Producto producto : listaProductos) {
+			totalFactura = producto.getPrecioUnitario();
+		}
+
+		this.totalFactura = totalFactura;
+	}
+
+	public String getCodigoVenta() {
+		return this.codigoVenta;
+	}
+
+	public void setCodigoVenta(String nroSucursal, String nroTicket) {
+		this.codigoVenta = nroSucursal.concat("-").concat(nroTicket);
 	}
 
 	public String getFecha() {
 		return this.fecha;
 	}
 
+	public String getNroSucursal() {
+		return this.nroSucursal;
+	}
+
+	public String getNroTicket() {
+		return this.nroTicket;
+	}
+
 	public String getFormaDePago() {
 		return this.formaDePago;
 	}
 
-	public Producto getProducto() {
-		return this.producto;
+	public String getNroDeTarjeta() {
+		return this.nroDeTarjeta;
 	}
 
-	public Persona getPersona() {
-		return this.persona;
+	public List<Producto> getProducto() {
+		return this.listaProductos;
 	}
 
-	public Map<String, String> getPersonaEmpleadoAtencion() {
-		return this.personaEmpleadoAtencion;
+	public String getEmpleadoAtencion() {
+		return this.empleadoAtencion;
 	}
 
-	public void setSucursal(String sucursal) {
-		this.sucursal = sucursal;
+	public String getEmpleadoCaja() {
+		return this.empleadoCaja;
 	}
 
-	public void setNumeroDeTicket(String numeroDeTicket) {
-		this.numeroDeTicket = numeroDeTicket;
+	public Persona getCliente() {
+		return this.cliente;
 	}
 
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 
+	public void setNroSucursal(String nroSucursal) {
+		this.nroSucursal = nroSucursal;
+	}
+
+	public void setNroTicket(String nroTicket) {
+		this.nroTicket = nroTicket;
+	}
+
 	public void setFormaDePago(String formaDePago) {
 		this.formaDePago = formaDePago;
 	}
 
-	public void setProducto(Producto producto) {
-		this.producto = producto;
+	public void setNroDeTarjeta(String nroDeTarjeta, String formaDePago) {
+		if ("Efectivo".equals(formaDePago)) {
+			nroDeTarjeta = null;
+		}
+		this.nroDeTarjeta = nroDeTarjeta;
 	}
 
-	public void setPersona(Persona persona) {
-		this.persona = persona;
+	public void setProducto(List<Producto> listaProductos) {
+		this.listaProductos = listaProductos;
 	}
 
-	public void setPersonaEmpleadoAtencion(Map<String, String> personaEmpleadoAtencion) {
-		this.personaEmpleadoAtencion = personaEmpleadoAtencion;
+	public void setEmpleadoAtencion(String empleadoAtencion) {
+		this.empleadoAtencion = empleadoAtencion;
+	}
+
+	public void setEmpleadoCaja(String empleadoCaja) {
+		this.empleadoCaja = empleadoCaja;
+	}
+
+	public void setCliente(Persona cliente) {
+		this.cliente = cliente;
 	}
 }

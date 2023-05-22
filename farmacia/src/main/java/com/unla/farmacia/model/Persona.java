@@ -5,9 +5,12 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Document(collection = "persona")
+@JsonInclude(Include.NON_NULL)
 public class Persona implements Serializable{
 	/**
 	 * 
@@ -36,12 +39,12 @@ public class Persona implements Serializable{
 		super();
 	}
 
-	public Persona(String cuil, Long dni, Domicilio domicilio, ObraSocial obraSocial, TipoPersona tipoPersona,
+	public Persona(String cuil, Long dni, Domicilio domicilio, String obraSocial, TipoPersona tipoPersona,
 			Long numeroDeAfiliado) {
 		this.cuil = cuil;
 		this.dni = dni;
 		this.domicilio = domicilio;
-		this.obraSocial = obraSocial;
+		this.obraSocial = new ObraSocial(obraSocial);
 		this.tipoPersona = tipoPersona;
 		this.numeroDeAfiliado = numeroDeAfiliado;
 	}

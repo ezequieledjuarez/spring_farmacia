@@ -4,31 +4,39 @@ import java.io.Serializable;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.unla.farmacia.exceptions.InvalidParameterException;
 
-@Document
-public class Producto implements Serializable{
-    /**
+@Document(collection = "producto")
+@JsonInclude(Include.NON_NULL)
+public class Producto implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2517704805353730955L;
 	@JsonProperty("codigo_producto")
 	private String codigoProducto;
+	@JsonProperty("nombre_producto")
 	private String nombre;
-    @JsonProperty("precio_unitario")
+	@JsonProperty("precio")
 	private Long precioUnitario;
-    @JsonProperty("tipo_producto")
+	@JsonProperty("tipo_producto")
 	private String tipoProducto;
 	private String descripcion;
 	private String laboratorio;
+	private int cantidad;
 
-	public Producto(String codigoProducto, String nombre, Long precioUnitario, String tipoProducto, String descripcion, String laboratorio) {
-		this.codigoProducto = codigoProducto;
-		this.nombre = nombre;
+	public Producto() {
+		super();
+	}
+
+	public Producto(String nombre, Long precioUnitario, int cantidad) throws InvalidParameterException {
+		setNombre(nombre);
 		this.precioUnitario = precioUnitario;
-		this.tipoProducto = tipoProducto;
-		this.descripcion = descripcion;
-		this.laboratorio = laboratorio;
+		setTipoProducto(nombre);
+		this.cantidad = cantidad;
 	}
 
 	public String getCodigoProducto() {
@@ -59,16 +67,16 @@ public class Producto implements Serializable{
 		this.codigoProducto = codigoProducto;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombre(String nombre) throws InvalidParameterException {
+		this.nombre = EnumProductos.fromNombre(nombre).getNombre();
 	}
 
 	public void setPrecioUnitario(Long precioUnitario) {
 		this.precioUnitario = precioUnitario;
 	}
 
-	public void setTipoProducto(String tipoProducto) {
-		this.tipoProducto = tipoProducto;
+	public void setTipoProducto(String nombre) throws InvalidParameterException {
+		this.tipoProducto = EnumProductos.fromNombre(nombre).getTipo();
 	}
 
 	public void setDescripcion(String descripcion) {
@@ -78,6 +86,13 @@ public class Producto implements Serializable{
 	public void setLaboratorio(String laboratorio) {
 		this.laboratorio = laboratorio;
 	}
+
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
 }
-
-
